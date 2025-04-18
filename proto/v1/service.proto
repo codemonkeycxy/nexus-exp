@@ -1,0 +1,18 @@
+syntax="proto3";
+
+package greeting.v1;
+
+option go_package = "nexus-exp/proto/v1;greeting";
+
+message GreetInput {
+  string name = 1;
+}
+
+message GreetOutput {
+  string greeting = 1;
+}
+
+service Greeting {
+  rpc Greet(GreetInput) returns (GreetOutput) {
+  }
+}
