@@ -4,16 +4,15 @@ import (
 	"context"
 	"log"
 	"os"
-	"time"
 
 	"go.temporal.io/sdk/client"
 	"go.temporal.io/sdk/temporalnexus"
 	"go.temporal.io/sdk/worker"
-	"go.temporal.io/sdk/workflow"
 
 	greeting "nexus-exp/gen/proto/v1"
 	"nexus-exp/gen/proto/v1/greetingnexus"
 	"nexus-exp/options"
+	"nexus-exp/server"
 
 	"github.com/nexus-rpc/sdk-go/nexus"
 )
@@ -35,7 +34,7 @@ func (h *handler) Greet(name string) nexus.Operation[*greeting.GreetInput, *gree
 }
 
 func (h *handler) SlothGreet(name string) nexus.Operation[*greeting.GreetInput, *greeting.GreetOutput] {
-	return temporalnexus.NewWorkflowRunOperation(greetingnexus.GreetingSlothGreetOperationName, SlothGreetWorkflow, func(ctx context.Context, input *greeting.GreetInput, options nexus.StartOperationOptions) (client.StartWorkflowOptions, error) {
+	return temporalnexus.NewWorkflowRunOperation(greetingnexus.GreetingSlothGreetOperationName, server.SlothGreetWorkflow, func(ctx context.Context, input *greeting.GreetInput, options nexus.StartOperationOptions) (client.StartWorkflowOptions, error) {
 		return client.StartWorkflowOptions{
 			// Workflow IDs should typically be business meaningful IDs and are used to dedupe workflow starts.
 			// For this example, we're using the request ID allocated by Temporal when the caller workflow schedules
@@ -44,16 +43,6 @@ func (h *handler) SlothGreet(name string) nexus.Operation[*greeting.GreetInput, 
 			// Task queue defaults to the task queue this operation is handled on.
 		}, nil
 	})
-}
-
-func SlothGreetWorkflow(ctx workflow.Context, input *greeting.GreetInput) (*greeting.GreetOutput, error) {
-	if err := workflow.Sleep(ctx, 5*time.Second); err != nil {
-		return nil, err
-	}
-
-	return &greeting.GreetOutput{
-		Greeting: "Hello, " + input.Name,
-	}, nil
 }
 
 func main() {
@@ -73,7 +62,7 @@ func main() {
 		log.Fatal(err)
 	}
 	w.RegisterNexusService(service)
-	w.RegisterWorkflow(SlothGreetWorkflow)
+	w.RegisterWorkflow(server.SlothGreetWorkflow)
 
 	err = w.Run(worker.InterruptCh())
 	if err != nil {
