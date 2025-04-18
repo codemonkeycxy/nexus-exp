@@ -10,8 +10,8 @@ package greetingnexus
 
 import (
 	"context"
-	nexusproto "github.com/nexus-rpc/sdk-go/nexus"
 	nexus "github.com/nexus-rpc/sdk-go/nexus"
+	nexusproto "github.com/nexu
 	v1 "nexus-exp/gen/proto/v1"
 )
 
@@ -23,14 +23,20 @@ const GreetingGreetOperationName = "Greet"
 
 var GreetingGreetOperation = nexus.NewOperationReference[*v1.GreetInput, *v1.GreetOutput](GreetingGreetOperationName)
 
+// GreetingSlothGreetOperationName defines the fully-qualified name for the SlothGreet operation.
+const GreetingSlothGreetOperationName = "SlothGreet"
+
+var GreetingSlothGreetOperation = nexus.NewOperationReference[*v1.GreetInput, *v1.GreetOutput](GreetingSlothGreetOperationName)
+
 type GreetingNexusHandler interface {
 	mustEmbedUnimplementedGreetingNexusHandler()
 	Greet(name string) nexus.Operation[*v1.GreetInput, *v1.GreetOutput]
+	SlothGreet(name string) nexus.Operation[*v1.GreetInput, *v1.GreetOutput]
 }
 
 func NewGreetingNexusService(h GreetingNexusHandler) (*nexus.Service, error) {
 	svc := nexus.NewService(GreetingServiceName)
-	err := svc.Register(h.Greet(GreetingGreetOperationName))
+	err := svc.Register(h.Greet(GreetingGreetOperationName), h.SlothGreet(GreetingSlothGreetOperationName))
 	if err != nil {
 		return nil, err
 	}
@@ -41,6 +47,9 @@ type UnimplementedGreetingNexusHandler struct{}
 
 func (h *UnimplementedGreetingNexusHandler) mustEmbedUnimplementedGreetingNexusHandler() {}
 func (h *UnimplementedGreetingNexusHandler) Greet(name string) nexus.Operation[*v1.GreetInput, *v1.GreetOutput] {
+	panic("TODO")
+}
+func (h *UnimplementedGreetingNexusHandler) SlothGreet(name string) nexus.Operation[*v1.GreetInput, *v1.GreetOutput] {
 	panic("TODO")
 }
 
@@ -84,5 +93,28 @@ func (c *GreetingNexusHTTPClient) GreetAsync(ctx context.Context, input *v1.Gree
 }
 func (c *GreetingNexusHTTPClient) Greet(ctx context.Context, input *v1.GreetInput, options nexus.ExecuteOperationOptions) (*v1.GreetOutput, error) {
 	output, err := nexus.ExecuteOperation(ctx, &c.client, GreetingGreetOperation, input, options)
+	return output, err
+}
+
+type GreetingSlothGreetOperationStartResult struct {
+	Successful *v1.GreetOutput
+	Pending    *nexus.OperationHandle[*v1.GreetOutput]
+	Links      []nexus.Link
+}
+
+func (c *GreetingNexusHTTPClient) SlothGreetAsync(ctx context.Context, input *v1.GreetInput, options nexus.StartOperationOptions) (*GreetingSlothGreetOperationStartResult, error) {
+	res, err := nexus.StartOperation(ctx, &c.client, GreetingSlothGreetOperation, input, options)
+	if err != nil {
+		return nil, err
+	}
+	typed := GreetingSlothGreetOperationStartResult{
+		Successful: res.Successful,
+		Pending:    res.Pending,
+		Links:      res.Links,
+	}
+	return &typed, nil
+}
+func (c *GreetingNexusHTTPClient) SlothGreet(ctx context.Context, input *v1.GreetInput, options nexus.ExecuteOperationOptions) (*v1.GreetOutput, error) {
+	output, err := nexus.ExecuteOperation(ctx, &c.client, GreetingSlothGreetOperation, input, options)
 	return output, err
 }

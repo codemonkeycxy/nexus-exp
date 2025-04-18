@@ -5,6 +5,7 @@ import (
 	"log"
 	"net"
 	"net/http"
+	"time"
 
 	greeting "nexus-exp/gen/proto/v1"
 	"nexus-exp/gen/proto/v1/greetingnexus"
@@ -18,6 +19,15 @@ type handler struct {
 
 func (h *handler) Greet(name string) nexus.Operation[*greeting.GreetInput, *greeting.GreetOutput] {
 	return nexus.NewSyncOperation(name, func(ctx context.Context, input *greeting.GreetInput, options nexus.StartOperationOptions) (*greeting.GreetOutput, error) {
+		return &greeting.GreetOutput{
+			Greeting: "Hello, " + input.Name,
+		}, nil
+	})
+}
+
+func (h *handler) SlothGreet(name string) nexus.Operation[*greeting.GreetInput, *greeting.GreetOutput] {
+	return nexus.NewSyncOperation(name, func(ctx context.Context, input *greeting.GreetInput, options nexus.StartOperationOptions) (*greeting.GreetOutput, error) {
+		time.Sleep(1 * time.Second)
 		return &greeting.GreetOutput{
 			Greeting: "Hello, " + input.Name,
 		}, nil

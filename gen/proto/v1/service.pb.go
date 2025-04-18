@@ -118,9 +118,11 @@ const file_proto_v1_service_proto_rawDesc = "" +
 	"GreetInput\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\")\n" +
 	"\vGreetOutput\x12\x1a\n" +
-	"\bgreeting\x18\x01 \x01(\tR\bgreeting2H\n" +
+	"\bgreeting\x18\x01 \x01(\tR\bgreeting2\x8b\x01\n" +
 	"\bGreeting\x12<\n" +
-	"\x05Greet\x12\x17.greeting.v1.GreetInput\x1a\x18.greeting.v1.GreetOutput\"\x00B\x89\x01\n" +
+	"\x05Greet\x12\x17.greeting.v1.GreetInput\x1a\x18.greeting.v1.GreetOutput\"\x00\x12A\n" +
+	"\n" +
+	"SlothGreet\x12\x17.greeting.v1.GreetInput\x1a\x18.greeting.v1.GreetOutput\"\x00B\x89\x01\n" +
 	"\x0fcom.greeting.v1B\fServiceProtoP\x01Z\x1bnexus-exp/proto/v1;greeting\xa2\x02\x03GXX\xaa\x02\vGreeting.V1\xca\x02\vGreeting\\V1\xe2\x02\x17Greeting\\V1\\GPBMetadata\xea\x02\fGreeting::V1b\x06proto3"
 
 var (
@@ -142,9 +144,11 @@ var file_proto_v1_service_proto_goTypes = []any{
 }
 var file_proto_v1_service_proto_depIdxs = []int32{
 	0, // 0: greeting.v1.Greeting.Greet:input_type -> greeting.v1.GreetInput
-	1, // 1: greeting.v1.Greeting.Greet:output_type -> greeting.v1.GreetOutput
-	1, // [1:2] is the sub-list for method output_type
-	0, // [0:1] is the sub-list for method input_type
+	0, // 1: greeting.v1.Greeting.SlothGreet:input_type -> greeting.v1.GreetInput
+	1, // 2: greeting.v1.Greeting.Greet:output_type -> greeting.v1.GreetOutput
+	1, // 3: greeting.v1.Greeting.SlothGreet:output_type -> greeting.v1.GreetOutput
+	2, // [2:4] is the sub-list for method output_type
+	0, // [0:2] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
 	0, // [0:0] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name

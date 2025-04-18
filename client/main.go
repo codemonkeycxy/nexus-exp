@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"log"
+	"time"
 
 	greeting "nexus-exp/gen/proto/v1"
 	"nexus-exp/gen/proto/v1/greetingnexus"
@@ -27,4 +28,14 @@ func main() {
 	}
 
 	log.Printf("Received greeting: %s", result.Greeting)
+
+	now := time.Now()
+	result, err = client.SlothGreet(ctx, &greeting.GreetInput{
+		Name: "World",
+	}, nexus.ExecuteOperationOptions{})
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	log.Printf("Received greeting from sloth after %s: %s", time.Since(now), result.Greeting)
 }

@@ -15,4 +15,7 @@ message GreetOutput {
 service Greeting {
   rpc Greet(GreetInput) returns (GreetOutput) {
   }
+
+  rpc SlothGreet(GreetInput) returns (GreetOutput) {
+  }
 }
