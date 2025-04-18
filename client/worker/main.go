@@ -25,6 +25,7 @@ func main() {
 
 	w := worker.New(c, client.TaskQueue, worker.Options{})
 
+	w.RegisterWorkflow(client.GreetWorkflow)
 	w.RegisterWorkflow(client.SlothGreetWorkflow)
 
 	err = w.Run(worker.InterruptCh())

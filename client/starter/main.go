@@ -22,13 +22,14 @@ func main() {
 		log.Fatalln("Unable to create client", err)
 	}
 	defer c.Close()
+	runWorkflow(c, client.GreetWorkflow, "World")
 	runWorkflow(c, client.SlothGreetWorkflow, "World")
 }
 
 func runWorkflow(c tmprlClient.Client, workflow interface{}, args ...interface{}) {
 	ctx := context.Background()
 	workflowOptions := tmprlClient.StartWorkflowOptions{
-		ID:        "nexus_hello_caller_workflow_" + time.Now().Format("20060102150405"),
+		ID:        "nexus_greet_caller_workflow_" + time.Now().Format("20060102150405"),
 		TaskQueue: client.TaskQueue,
 	}
 
