@@ -63,6 +63,7 @@ func main() {
 	}
 	w.RegisterNexusService(service)
 	w.RegisterWorkflow(server.SlothGreetWorkflow)
+	w.RegisterWorkflow(server.SlothSleepAndGreetWorkflow)
 
 	err = w.Run(worker.InterruptCh())
 	if err != nil {
