@@ -2,9 +2,12 @@ package client
 
 import (
 	"fmt"
+	"strings"
 	"time"
 
 	"go.temporal.io/sdk/workflow"
+
+	"github.com/hashicorp/go-multierror"
 
 	greeting "nexus-exp/gen/proto/v1"
 	"nexus-exp/gen/proto/v1/greetingnexus"
@@ -33,18 +36,29 @@ func GreetWorkflow(ctx workflow.Context, message string) (string, error) {
 func SlothGreetWorkflow(ctx workflow.Context, message string) (string, error) {
 	c := workflow.NewNexusClient(endpointName, greetingnexus.GreetingServiceName)
 
-	start := workflow.Now(ctx)
-	fut := c.ExecuteOperation(ctx, greetingnexus.GreetingSlothGreetOperationName, &greeting.GreetInput{
-		Name: message,
-	}, workflow.NexusOperationOptions{
-		ScheduleToCloseTimeout: 15 * time.Minute, // If sloth doesn't respond in 15 minutes, let it sleep.
-		Summary:                "🌿 < Hello Sloth > 🦥💤 ^__^",
-	})
+	var greetings []string
+	var multiErr error
+	wg := workflow.NewWaitGroup(ctx)
+	for i := 0; i < 3; i++ {
+		wg.Add(1)
+		workflow.Go(ctx, func(ctx workflow.Context) {
+			defer wg.Done()
+			start := workflow.Now(ctx)
+			fut := c.ExecuteOperation(ctx, greetingnexus.GreetingSlothGreetOperationName, &greeting.GreetInput{
+				Name: message,
+			}, workflow.NexusOperationOptions{
+				ScheduleToCloseTimeout: 15 * time.Minute, // If sloth doesn't respond in 15 minutes, let it sleep.
+				Summary:                "🌿 < Hello Sloth > 🦥💤 ^__^",
+			})
 
-	var res greeting.GreetOutput
-	if err := fut.Get(ctx, &res); err != nil {
-		return "", err
+			var res greeting.GreetOutput
+			if err := fut.Get(ctx, &res); err != nil {
+				multiErr = multierror.Append(multiErr, err)
+			}
+			greetings = append(greetings, fmt.Sprintf("After %s, the sloth responded: %s", workflow.Now(ctx).Sub(start), res.Greeting))
+		})
 	}
 
-	return fmt.Sprintf("After %s, the sloth responded: %s", workflow.Now(ctx).Sub(start), res.Greeting), nil
+	wg.Wait(ctx)
+	return strings.Join(greetings, "\n"), multiErr
 }

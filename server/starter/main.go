@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 
+	"go.temporal.io/api/enums/v1"
 	"go.temporal.io/sdk/client"
 	"go.temporal.io/sdk/temporalnexus"
 	"go.temporal.io/sdk/worker"
@@ -36,10 +37,8 @@ func (h *handler) Greet(name string) nexus.Operation[*greeting.GreetInput, *gree
 func (h *handler) SlothGreet(name string) nexus.Operation[*greeting.GreetInput, *greeting.GreetOutput] {
 	return temporalnexus.NewWorkflowRunOperation(greetingnexus.GreetingSlothGreetOperationName, server.SlothGreetWorkflow, func(ctx context.Context, input *greeting.GreetInput, options nexus.StartOperationOptions) (client.StartWorkflowOptions, error) {
 		return client.StartWorkflowOptions{
-			// Workflow IDs should typically be business meaningful IDs and are used to dedupe workflow starts.
-			// For this example, we're using the request ID allocated by Temporal when the caller workflow schedules
-			// the operation, this ID is guaranteed to be stable across retries of this operation.
-			ID: options.RequestID,
+			ID:                       "greet-sloth",
+			WorkflowIDConflictPolicy: enums.WORKFLOW_ID_CONFLICT_POLICY_USE_EXISTING,
 			// Task queue defaults to the task queue this operation is handled on.
 		}, nil
 	})
