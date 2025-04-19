@@ -23,7 +23,8 @@ func main() {
 	}
 	defer c.Close()
 	runWorkflow(c, client.GreetWorkflow, "World")
-	runWorkflow(c, client.SlothGreetWorkflow, "World")
+	runWorkflow(c, client.SlothGreetWorkflow, "World", []string{"Snugglemuffin", "Snugglemuffin", "Snugglemuffin"}) // Greet the same sloth 3 times
+	runWorkflow(c, client.SlothGreetWorkflow, "World", []string{"Snugglemuffin", "Mochapaws", "Lazeberry"})         // Greet 3 different sloths
 }
 
 func runWorkflow(c tmprlClient.Client, workflow interface{}, args ...interface{}) {

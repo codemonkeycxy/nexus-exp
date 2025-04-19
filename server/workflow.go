@@ -10,13 +10,13 @@ import (
 
 type (
 	SlothSleepAndGreetWorkflowInput struct {
-		GreetInput *greeting.GreetInput
+		GreetInput *greeting.SlothGreetInput
 		CountDown  int
 	}
 )
 
-func SlothGreetWorkflow(ctx workflow.Context, input *greeting.GreetInput) (*greeting.GreetOutput, error) {
-	var response *greeting.GreetOutput
+func SlothGreetWorkflow(ctx workflow.Context, input *greeting.SlothGreetInput) (*greeting.SlothGreetOutput, error) {
+	var response *greeting.SlothGreetOutput
 	if err := workflow.ExecuteChildWorkflow(ctx, SlothSleepAndGreetWorkflow, SlothSleepAndGreetWorkflowInput{
 		GreetInput: input,
 		CountDown:  5,
@@ -27,10 +27,10 @@ func SlothGreetWorkflow(ctx workflow.Context, input *greeting.GreetInput) (*gree
 	return response, nil
 }
 
-func SlothSleepAndGreetWorkflow(ctx workflow.Context, input SlothSleepAndGreetWorkflowInput) (*greeting.GreetOutput, error) {
+func SlothSleepAndGreetWorkflow(ctx workflow.Context, input SlothSleepAndGreetWorkflowInput) (*greeting.SlothGreetOutput, error) {
 	if input.CountDown < 1 {
-		return &greeting.GreetOutput{
-			Greeting: "Hello, " + input.GreetInput.Name,
+		return &greeting.SlothGreetOutput{
+			Greeting: "Hello, " + input.GreetInput.Greeting,
 		}, nil
 	}
 

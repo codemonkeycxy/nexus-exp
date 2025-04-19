@@ -12,10 +12,19 @@ message GreetOutput {
   string greeting = 1;
 }
 
+message SlothGreetInput {
+  string greeting = 1;
+  string sloth_name = 2;
+}
+
+message SlothGreetOutput {
+  string greeting = 1;
+}
+
 service Greeting {
   rpc Greet(GreetInput) returns (GreetOutput) {
   }
 
-  rpc SlothGreet(GreetInput) returns (GreetOutput) {
+  rpc SlothGreet(SlothGreetInput) returns (SlothGreetOutput) {
   }
 }

@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"os"
 
@@ -34,12 +35,11 @@ func (h *handler) Greet(name string) nexus.Operation[*greeting.GreetInput, *gree
 	})
 }
 
-func (h *handler) SlothGreet(name string) nexus.Operation[*greeting.GreetInput, *greeting.GreetOutput] {
-	return temporalnexus.NewWorkflowRunOperation(greetingnexus.GreetingSlothGreetOperationName, server.SlothGreetWorkflow, func(ctx context.Context, input *greeting.GreetInput, options nexus.StartOperationOptions) (client.StartWorkflowOptions, error) {
+func (h *handler) SlothGreet(name string) nexus.Operation[*greeting.SlothGreetInput, *greeting.SlothGreetOutput] {
+	return temporalnexus.NewWorkflowRunOperation(greetingnexus.GreetingSlothGreetOperationName, server.SlothGreetWorkflow, func(ctx context.Context, input *greeting.SlothGreetInput, options nexus.StartOperationOptions) (client.StartWorkflowOptions, error) {
 		return client.StartWorkflowOptions{
-			ID:                       "greet-sloth",
-			WorkflowIDConflictPolicy: enums.WORKFLOW_ID_CONFLICT_POLICY_USE_EXISTING,
-			// Task queue defaults to the task queue this operation is handled on.
+			ID:                       fmt.Sprintf("greet-sloth-%s", input.GetSlothName()),
+			WorkflowIDConflictPolicy: enums.WORKFLOW_ID_CONFLICT_POLICY_USE_EXISTING, // let the same sloth handle all greetings
 		}, nil
 	})
 }

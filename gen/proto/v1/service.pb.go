@@ -109,6 +109,102 @@ func (x *GreetOutput) GetGreeting() string {
 	return ""
 }
 
+type SlothGreetInput struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Greeting      string                 `protobuf:"bytes,1,opt,name=greeting,proto3" json:"greeting,omitempty"`
+	SlothName     string                 `protobuf:"bytes,2,opt,name=sloth_name,json=slothName,proto3" json:"sloth_name,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SlothGreetInput) Reset() {
+	*x = SlothGreetInput{}
+	mi := &file_proto_v1_service_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SlothGreetInput) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SlothGreetInput) ProtoMessage() {}
+
+func (x *SlothGreetInput) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_v1_service_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SlothGreetInput.ProtoReflect.Descriptor instead.
+func (*SlothGreetInput) Descriptor() ([]byte, []int) {
+	return file_proto_v1_service_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *SlothGreetInput) GetGreeting() string {
+	if x != nil {
+		return x.Greeting
+	}
+	return ""
+}
+
+func (x *SlothGreetInput) GetSlothName() string {
+	if x != nil {
+		return x.SlothName
+	}
+	return ""
+}
+
+type SlothGreetOutput struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Greeting      string                 `protobuf:"bytes,1,opt,name=greeting,proto3" json:"greeting,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SlothGreetOutput) Reset() {
+	*x = SlothGreetOutput{}
+	mi := &file_proto_v1_service_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SlothGreetOutput) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SlothGreetOutput) ProtoMessage() {}
+
+func (x *SlothGreetOutput) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_v1_service_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SlothGreetOutput.ProtoReflect.Descriptor instead.
+func (*SlothGreetOutput) Descriptor() ([]byte, []int) {
+	return file_proto_v1_service_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *SlothGreetOutput) GetGreeting() string {
+	if x != nil {
+		return x.Greeting
+	}
+	return ""
+}
+
 var File_proto_v1_service_proto protoreflect.FileDescriptor
 
 const file_proto_v1_service_proto_rawDesc = "" +
@@ -118,11 +214,17 @@ const file_proto_v1_service_proto_rawDesc = "" +
 	"GreetInput\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\")\n" +
 	"\vGreetOutput\x12\x1a\n" +
-	"\bgreeting\x18\x01 \x01(\tR\bgreeting2\x8b\x01\n" +
-	"\bGreeting\x12<\n" +
-	"\x05Greet\x12\x17.greeting.v1.GreetInput\x1a\x18.greeting.v1.GreetOutput\"\x00\x12A\n" +
+	"\bgreeting\x18\x01 \x01(\tR\bgreeting\"L\n" +
+	"\x0fSlothGreetInput\x12\x1a\n" +
+	"\bgreeting\x18\x01 \x01(\tR\bgreeting\x12\x1d\n" +
 	"\n" +
-	"SlothGreet\x12\x17.greeting.v1.GreetInput\x1a\x18.greeting.v1.GreetOutput\"\x00B\x89\x01\n" +
+	"sloth_name\x18\x02 \x01(\tR\tslothName\".\n" +
+	"\x10SlothGreetOutput\x12\x1a\n" +
+	"\bgreeting\x18\x01 \x01(\tR\bgreeting2\x95\x01\n" +
+	"\bGreeting\x12<\n" +
+	"\x05Greet\x12\x17.greeting.v1.GreetInput\x1a\x18.greeting.v1.GreetOutput\"\x00\x12K\n" +
+	"\n" +
+	"SlothGreet\x12\x1c.greeting.v1.SlothGreetInput\x1a\x1d.greeting.v1.SlothGreetOutput\"\x00B\x89\x01\n" +
 	"\x0fcom.greeting.v1B\fServiceProtoP\x01Z\x1bnexus-exp/proto/v1;greeting\xa2\x02\x03GXX\xaa\x02\vGreeting.V1\xca\x02\vGreeting\\V1\xe2\x02\x17Greeting\\V1\\GPBMetadata\xea\x02\fGreeting::V1b\x06proto3"
 
 var (
@@ -137,16 +239,18 @@ func file_proto_v1_service_proto_rawDescGZIP() []byte {
 	return file_proto_v1_service_proto_rawDescData
 }
 
-var file_proto_v1_service_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_proto_v1_service_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_proto_v1_service_proto_goTypes = []any{
-	(*GreetInput)(nil),  // 0: greeting.v1.GreetInput
-	(*GreetOutput)(nil), // 1: greeting.v1.GreetOutput
+	(*GreetInput)(nil),       // 0: greeting.v1.GreetInput
+	(*GreetOutput)(nil),      // 1: greeting.v1.GreetOutput
+	(*SlothGreetInput)(nil),  // 2: greeting.v1.SlothGreetInput
+	(*SlothGreetOutput)(nil), // 3: greeting.v1.SlothGreetOutput
 }
 var file_proto_v1_service_proto_depIdxs = []int32{
 	0, // 0: greeting.v1.Greeting.Greet:input_type -> greeting.v1.GreetInput
-	0, // 1: greeting.v1.Greeting.SlothGreet:input_type -> greeting.v1.GreetInput
+	2, // 1: greeting.v1.Greeting.SlothGreet:input_type -> greeting.v1.SlothGreetInput
 	1, // 2: greeting.v1.Greeting.Greet:output_type -> greeting.v1.GreetOutput
-	1, // 3: greeting.v1.Greeting.SlothGreet:output_type -> greeting.v1.GreetOutput
+	3, // 3: greeting.v1.Greeting.SlothGreet:output_type -> greeting.v1.SlothGreetOutput
 	2, // [2:4] is the sub-list for method output_type
 	0, // [0:2] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
@@ -165,7 +269,7 @@ func file_proto_v1_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_proto_v1_service_proto_rawDesc), len(file_proto_v1_service_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   2,
+			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
