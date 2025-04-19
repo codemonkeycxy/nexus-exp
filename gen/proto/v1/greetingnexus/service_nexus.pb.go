@@ -10,8 +10,8 @@ package greetingnexus
 
 import (
 	"context"
+	nexusproto "github.com/nexus-rpc/sdk-go/nexus"
 	nexus "github.com/nexus-rpc/sdk-go/nexus"
-	nexusproto "github.com/nexu
 	v1 "nexus-exp/gen/proto/v1"
 )
 
