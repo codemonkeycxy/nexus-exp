@@ -1,20 +1,5 @@
-# nexus
-
-Temporal Nexus is a new feature of the Temporal platform designed to connect durable executions across team, namespace,
-region, and cloud boundaries. It promotes a more modular architecture for sharing a subset of your team’s capabilities
-via well-defined service API contracts for other teams to use, that abstract underlying Temporal primitives, like
-Workflows, or execute arbitrary code.
-
-Learn more at [temporal.io/nexus](https://temporal.io/nexus).
-
-This sample shows how to use Temporal for authoring a Nexus service and call it from a workflow.
-
-### Sample directory structure
-
-- [service](./service) - shared service definition
-- [caller](./caller) - caller workflows, worker, and starter, which execute Nexus operations
-- [handler](./handler) - handler workflow, operations, and worker, which defines Nexus operations and creates a Nexus service
-- [options](./options) - command line argument parsing utility
+# nexus-exp
+Experiment with Nexus + Temporal Workflow + Proto Code Gen
 
 ## Getting started locally
 
@@ -47,52 +32,37 @@ temporal operator namespace create --namespace my-caller-namespace
 
 #### Create Nexus endpoint
 
-> NOTE: this must be run in the `nexus` sample directory.
-
 ```
 temporal operator nexus endpoint create \
   --name my-nexus-endpoint-name \
   --target-namespace my-target-namespace \
-  --target-task-queue my-handler-task-queue \
-  --description-file ./service/description.md
+  --target-task-queue my-handler-task-queue
 ```
-
-## Getting started with a self-hosted service or Temporal Cloud
-
-Self hosted users can [try Nexus
-out](https://github.com/temporalio/temporal/blob/main/docs/architecture/nexus.md#trying-nexus-out) in single cluster
-deployments with server version 1.25.0.
 
 ### Make Nexus calls across namespace boundaries
 
-> Instructions apply for local development, for Temporal Cloud or a self hosted setups, supply the relevant [CLI
-> flags](./options/cli.go) to properly set up the connection.
-
 In separate terminal windows:
 
-### Nexus handler worker
+### Nexus server
 
 ```
-cd handler
-go run ./worker \
+go run ./server/starter \
     -target-host localhost:7233 \
     -namespace my-target-namespace
 ```
 
-### Nexus caller worker
+### Nexus client worker
 
 ```
-cd caller
-go run ./worker \
+go run ./client/worker \
     -target-host localhost:7233 \
     -namespace my-caller-namespace
 ```
 
-### Start caller workflow
+### Start client workflow
 
 ```
-cd caller
-go run ./starter \
+go run ./client/starter \
     -target-host localhost:7233 \
     -namespace my-caller-namespace
 ```
@@ -101,7 +71,9 @@ go run ./starter \
 
 which should result in:
 ```
-2024/07/23 19:57:40 Workflow result: Nexus Echo 👋
-2024/07/23 19:57:40 Started workflow WorkflowID nexus_hello_caller_workflow_20240723195740 RunID c9789128-2fcd-4083-829d-95e43279f6d7
-2024/07/23 19:57:40 Workflow result: ¡Hola! Nexus 👋
+2025/04/18 17:05:15 INFO  No logger configured for temporal client. Created default one.
+2025/04/18 17:05:15 Started workflow WorkflowID nexus_greet_caller_workflow_20250418170515 RunID 9f6f97bd-ffd5-4244-9c25-2b13225974f8
+2025/04/18 17:05:15 Workflow result: Hello, World
+2025/04/18 17:05:15 Started workflow WorkflowID nexus_greet_caller_workflow_20250418170515 RunID dd5f4b70-46a0-4050-b876-9e56b89fda7c
+2025/04/18 17:05:20 Workflow result: After 5.021175s, the sloth responded: Hello, World
 ```
