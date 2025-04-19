@@ -77,3 +77,11 @@ which should result in:
 2025/04/18 17:05:15 Started workflow WorkflowID nexus_greet_caller_workflow_20250418170515 RunID dd5f4b70-46a0-4050-b876-9e56b89fda7c
 2025/04/18 17:05:20 Workflow result: After 5.021175s, the sloth responded: Hello, World
 ```
+
+### Regenerate proto code
+
+```
+buf generate
+```
+The proto gen library is a little broken right now so you will see some compile errors in the generated file. I'm sure
+you will figure it out though :P
