@@ -2,6 +2,7 @@ package client
 
 import (
 	"fmt"
+	"time"
 
 	"go.temporal.io/sdk/workflow"
 
@@ -36,7 +37,8 @@ func SlothGreetWorkflow(ctx workflow.Context, message string) (string, error) {
 	fut := c.ExecuteOperation(ctx, greetingnexus.GreetingSlothGreetOperationName, &greeting.GreetInput{
 		Name: message,
 	}, workflow.NexusOperationOptions{
-		Summary: "🌿 < Hello Sloth > 🦥💤 ^__^",
+		ScheduleToCloseTimeout: 15 * time.Minute, // If sloth doesn't respond in 15 minutes, let it sleep.
+		Summary:                "🌿 < Hello Sloth > 🦥💤 ^__^",
 	})
 
 	var res greeting.GreetOutput
