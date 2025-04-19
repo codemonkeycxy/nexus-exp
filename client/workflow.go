@@ -35,7 +35,9 @@ func SlothGreetWorkflow(ctx workflow.Context, message string) (string, error) {
 	start := workflow.Now(ctx)
 	fut := c.ExecuteOperation(ctx, greetingnexus.GreetingSlothGreetOperationName, &greeting.GreetInput{
 		Name: message,
-	}, workflow.NexusOperationOptions{})
+	}, workflow.NexusOperationOptions{
+		Summary: "🌿 < Hello Sloth > 🦥💤 ^__^",
+	})
 
 	var res greeting.GreetOutput
 	if err := fut.Get(ctx, &res); err != nil {
