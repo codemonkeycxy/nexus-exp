@@ -12,3 +12,9 @@ plugins:
     strategy: all
     opt:
       - paths=source_relative
+  - local: protoc-gen-nexus-temporal
+    out: gen
+    strategy: all
+    opt:
+      - paths=source_relative
+      - lang=go

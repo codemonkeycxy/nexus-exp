@@ -10,7 +10,7 @@ import (
 	"github.com/hashicorp/go-multierror"
 
 	greeting "nexus-exp/gen/proto/v1"
-	"nexus-exp/gen/proto/v1/greetingnexus"
+	"nexus-exp/gen/proto/v1/greetingnexustemporal"
 )
 
 const (
@@ -19,14 +19,11 @@ const (
 )
 
 func GreetWorkflow(ctx workflow.Context, message string) (string, error) {
-	c := workflow.NewNexusClient(endpointName, greetingnexus.GreetingServiceName)
-
-	fut := c.ExecuteOperation(ctx, greetingnexus.GreetingGreetOperationName, &greeting.GreetInput{
+	c := greetingnexustemporal.NewGreetingNexusClient(endpointName)
+	res, err := c.Greet(ctx, &greeting.GreetInput{
 		Name: message,
 	}, workflow.NexusOperationOptions{})
-
-	var res greeting.GreetOutput
-	if err := fut.Get(ctx, &res); err != nil {
+	if err != nil {
 		return "", err
 	}
 
@@ -34,7 +31,7 @@ func GreetWorkflow(ctx workflow.Context, message string) (string, error) {
 }
 
 func SlothGreetWorkflow(ctx workflow.Context, message string, slothNames []string) (string, error) {
-	c := workflow.NewNexusClient(endpointName, greetingnexus.GreetingServiceName)
+	c := greetingnexustemporal.NewGreetingNexusClient(endpointName)
 
 	var greetings []string
 	var multiErr error
@@ -44,19 +41,18 @@ func SlothGreetWorkflow(ctx workflow.Context, message string, slothNames []strin
 		workflow.Go(ctx, func(ctx workflow.Context) {
 			defer wg.Done()
 			start := workflow.Now(ctx)
-			fut := c.ExecuteOperation(ctx, greetingnexus.GreetingSlothGreetOperationName, &greeting.SlothGreetInput{
+			res, err := c.SlothGreet(ctx, &greeting.SlothGreetInput{
 				Greeting:  message,
 				SlothName: slothName,
 			}, workflow.NexusOperationOptions{
 				ScheduleToCloseTimeout: 15 * time.Minute, // If sloth doesn't respond in 15 minutes, let it sleep.
 				Summary:                "🌿 < Hello Sloth > 🦥💤 ^__^",
 			})
-
-			var res greeting.SlothGreetOutput
-			if err := fut.Get(ctx, &res); err != nil {
+			if err != nil {
 				multiErr = multierror.Append(multiErr, err)
+			} else {
+				greetings = append(greetings, fmt.Sprintf("After %s, the sloth %s responded: %s", workflow.Now(ctx).Sub(start), slothName, res.Greeting))
 			}
-			greetings = append(greetings, fmt.Sprintf("After %s, the sloth %s responded: %s", workflow.Now(ctx).Sub(start), slothName, res.Greeting))
 		})
 	}
 
