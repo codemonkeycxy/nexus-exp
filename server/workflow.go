@@ -15,18 +15,6 @@ type (
 	}
 )
 
-func SlothGreetWorkflow(ctx workflow.Context, input *greeting.SlothGreetInput) (*greeting.SlothGreetOutput, error) {
-	var response *greeting.SlothGreetOutput
-	if err := workflow.ExecuteChildWorkflow(ctx, SlothSleepAndGreetWorkflow, SlothSleepAndGreetWorkflowInput{
-		GreetInput: input,
-		CountDown:  5,
-	}).Get(ctx, &response); err != nil {
-		return response, err
-	}
-
-	return response, nil
-}
-
 func SlothSleepAndGreetWorkflow(ctx workflow.Context, input SlothSleepAndGreetWorkflowInput) (*greeting.SlothGreetOutput, error) {
 	if input.CountDown < 1 {
 		return &greeting.SlothGreetOutput{

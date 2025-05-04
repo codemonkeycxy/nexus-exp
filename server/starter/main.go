@@ -24,7 +24,7 @@ const (
 )
 
 type handler struct {
-	greetingnexus.GreetingNexusHandler
+	greetingnexus.UnimplementedGreetingNexusHandler
 }
 
 func (h *handler) Greet(name string) nexus.Operation[*greeting.GreetInput, *greeting.GreetOutput] {
@@ -36,11 +36,17 @@ func (h *handler) Greet(name string) nexus.Operation[*greeting.GreetInput, *gree
 }
 
 func (h *handler) SlothGreet(name string) nexus.Operation[*greeting.SlothGreetInput, *greeting.SlothGreetOutput] {
-	return temporalnexus.NewWorkflowRunOperation(greetingnexus.GreetingSlothGreetOperationName, server.SlothGreetWorkflow, func(ctx context.Context, input *greeting.SlothGreetInput, options nexus.StartOperationOptions) (client.StartWorkflowOptions, error) {
-		return client.StartWorkflowOptions{
-			ID:                       fmt.Sprintf("greet-sloth-%s", input.GetSlothName()),
-			WorkflowIDConflictPolicy: enums.WORKFLOW_ID_CONFLICT_POLICY_USE_EXISTING, // let the same sloth handle all greetings
-		}, nil
+	return temporalnexus.MustNewWorkflowRunOperationWithOptions(temporalnexus.WorkflowRunOperationOptions[*greeting.SlothGreetInput, *greeting.SlothGreetOutput]{
+		Name: name,
+		Handler: func(ctx context.Context, input *greeting.SlothGreetInput, operationOptions nexus.StartOperationOptions) (temporalnexus.WorkflowHandle[*greeting.SlothGreetOutput], error) {
+			return temporalnexus.ExecuteWorkflow(ctx, operationOptions, client.StartWorkflowOptions{
+				ID:                       fmt.Sprintf("greet-sloth-%s", input.GetSlothName()),
+				WorkflowIDConflictPolicy: enums.WORKFLOW_ID_CONFLICT_POLICY_USE_EXISTING, // let the same sloth handle all greetings
+			}, server.SlothSleepAndGreetWorkflow, server.SlothSleepAndGreetWorkflowInput{
+				GreetInput: input,
+				CountDown:  5,
+			})
+		},
 	})
 }
 
@@ -61,7 +67,6 @@ func main() {
 		log.Fatal(err)
 	}
 	w.RegisterNexusService(service)
-	w.RegisterWorkflow(server.SlothGreetWorkflow)
 	w.RegisterWorkflow(server.SlothSleepAndGreetWorkflow)
 
 	err = w.Run(worker.InterruptCh())

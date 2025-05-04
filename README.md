@@ -71,11 +71,17 @@ go run ./client/starter \
 
 which should result in:
 ```
-2025/04/18 17:05:15 INFO  No logger configured for temporal client. Created default one.
-2025/04/18 17:05:15 Started workflow WorkflowID nexus_greet_caller_workflow_20250418170515 RunID 9f6f97bd-ffd5-4244-9c25-2b13225974f8
-2025/04/18 17:05:15 Workflow result: Hello, World
-2025/04/18 17:05:15 Started workflow WorkflowID nexus_greet_caller_workflow_20250418170515 RunID dd5f4b70-46a0-4050-b876-9e56b89fda7c
-2025/04/18 17:05:20 Workflow result: After 5.021175s, the sloth responded: Hello, World
+2025/05/03 19:12:13 INFO  No logger configured for temporal client. Created default one.
+2025/05/03 19:12:13 Started workflow WorkflowID nexus_greet_caller_workflow_20250503191213 RunID 01969910-bec6-78d5-965f-2f0106ab98dd
+2025/05/03 19:12:13 Workflow result: Hello, World
+2025/05/03 19:12:13 Started workflow WorkflowID nexus_greet_caller_workflow_20250503191213 RunID 01969910-bed8-774f-9a7f-a7efa6c49791
+2025/05/03 19:12:18 Workflow result: After 5.10463s, the sloth Snugglemuffin responded: Hello, World
+After 5.10463s, the sloth Snugglemuffin responded: Hello, World
+After 5.10463s, the sloth Snugglemuffin responded: Hello, World
+2025/05/03 19:12:18 Started workflow WorkflowID nexus_greet_caller_workflow_20250503191218 RunID 01969910-d2d0-7785-a676-4a2586eb2cea
+2025/05/03 19:12:23 Workflow result: After 5.109416s, the sloth Snugglemuffin responded: Hello, World
+After 5.113452s, the sloth Lazeberry responded: Hello, World
+After 5.11534s, the sloth Mochapaws responded: Hello, World
 ```
 
 ### Regenerate proto code
