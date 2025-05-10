@@ -12,9 +12,18 @@ plugins:
     strategy: all
     opt:
       - paths=source_relative
-  - local: protoc-gen-nexus-temporal
+      # Optionally include or exclude operations and services
+      # - include-service-tags=my-include-tag
+      # - exclude-service-tags=my-exclude-tag
+      # - include-operation-tags=my-include-tag
+      # - exclude-operation-tags=my-exclude-tag
+  - local: protoc-gen-go-nexus-temporal
     out: gen
     strategy: all
     opt:
       - paths=source_relative
-      - lang=go
+      # Optionally include or exclude operations and services
+      # - include-service-tags=my-include-tag
+      # - exclude-service-tags=my-exclude-tag
+      # - include-operation-tags=my-include-tag
+      # - exclude-operation-tags=my-exclude-tag

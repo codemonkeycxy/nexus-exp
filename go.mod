@@ -1,16 +1,17 @@
 module nexus-exp
 
-go 1.23.0
+go 1.23.4
 
 toolchain go1.24.0
 
 require (
 	github.com/hashicorp/go-multierror v1.1.1
-	github.com/nexus-rpc/sdk-go v0.3.0
+	github.com/nexus-rpc/sdk-go v0.4.0
+	github.com/nexus-rpc/sdk-go/contrib/nexusproto v0.1.0
 	go.temporal.io/api v1.46.0
 	go.temporal.io/sdk v1.34.0
 	google.golang.org/grpc v1.66.0
-	google.golang.org/protobuf v1.36.5
+	google.golang.org/protobuf v1.36.6
 )
 
 require (

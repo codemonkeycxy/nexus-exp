@@ -5,7 +5,7 @@ Experiment with Nexus + Temporal Workflow + Proto Code Gen
 
 ### Get `temporal` CLI to enable local development
 
-1. Follow the instructions on the [docs
+Follow the instructions on the [docs
    site](https://learn.temporal.io/getting_started/go/dev_environment/#set-up-a-local-temporal-service-for-development-with-temporal-cli)
    to install Temporal CLI.
 
@@ -86,8 +86,15 @@ After 5.11534s, the sloth Mochapaws responded: Hello, World
 
 ### Regenerate proto code
 
+#### Prerequisite: Install buf and the latest code gen library
+
+```bash
+brew install buf
+go install github.com/bergundy/protoc-gen-go-nexus/cmd/protoc-gen-go-nexus@latest
+go install github.com/bergundy/protoc-gen-go-nexus-temporal/cmd/protoc-gen-go-nexus-temporal@latest
+```
+
+#### Generate the proto code
 ```
 buf generate
 ```
-The proto gen library is a little broken right now so you will see some compile errors in the generated file. I'm sure
-you will figure it out though :P

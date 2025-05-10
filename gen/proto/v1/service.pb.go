@@ -224,8 +224,8 @@ const file_proto_v1_service_proto_rawDesc = "" +
 	"\bGreeting\x12<\n" +
 	"\x05Greet\x12\x17.greeting.v1.GreetInput\x1a\x18.greeting.v1.GreetOutput\"\x00\x12K\n" +
 	"\n" +
-	"SlothGreet\x12\x1c.greeting.v1.SlothGreetInput\x1a\x1d.greeting.v1.SlothGreetOutput\"\x00B\x89\x01\n" +
-	"\x0fcom.greeting.v1B\fServiceProtoP\x01Z\x1bnexus-exp/proto/v1;greeting\xa2\x02\x03GXX\xaa\x02\vGreeting.V1\xca\x02\vGreeting\\V1\xe2\x02\x17Greeting\\V1\\GPBMetadata\xea\x02\fGreeting::V1b\x06proto3"
+	"SlothGreet\x12\x1c.greeting.v1.SlothGreetInput\x1a\x1d.greeting.v1.SlothGreetOutput\"\x00B\x8d\x01\n" +
+	"\x0fcom.greeting.v1B\fServiceProtoP\x01Z\x1fnexus-exp/gen/proto/v1;greeting\xa2\x02\x03GXX\xaa\x02\vGreeting.V1\xca\x02\vGreeting\\V1\xe2\x02\x17Greeting\\V1\\GPBMetadata\xea\x02\fGreeting::V1b\x06proto3"
 
 var (
 	file_proto_v1_service_proto_rawDescOnce sync.Once

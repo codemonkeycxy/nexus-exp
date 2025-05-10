@@ -24,7 +24,6 @@ const (
 )
 
 type handler struct {
-	greetingnexus.UnimplementedGreetingNexusHandler
 }
 
 func (h *handler) Greet(name string) nexus.Operation[*greeting.GreetInput, *greeting.GreetOutput] {

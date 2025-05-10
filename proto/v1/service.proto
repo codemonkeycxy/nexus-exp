@@ -2,7 +2,7 @@ syntax="proto3";
 
 package greeting.v1;
 
-option go_package = "nexus-exp/proto/v1;greeting";
+option go_package = "nexus-exp/gen/proto/v1;greeting";
 
 message GreetInput {
   string name = 1;
